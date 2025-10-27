@@ -81,8 +81,8 @@ class TicTacToeEnv:
             self.done, self._winner = True, None
             return self._state(), 0.0, True, {"winner": None}
 
-        # Non terminal state
-        return self._state(), 0.0, False, {}
+        # Non terminal state - penalize so agent seeks faster wins
+        return self._state(), -0.1, False, {}
 
     def legal_action_mask(self) -> Tensor:
         return (self.board == 0)
