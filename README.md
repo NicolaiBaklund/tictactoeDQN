@@ -21,4 +21,9 @@ run test.py
 
 
 ## Results
-With the barebones implementation, the DQN agent learns to play Tic Tac Toe reasonably well after several thousand training episodes. Further improvements can be made by tuning hyperparameters, enhancing the neural network architecture, or implementing more advanced techniques like Double DQN or Prioritized Experience Replay.
+With the barebones implementation, the DQN agent learns to play Tic Tac Toe reasonably well after several thousand training episodes. Further improvements could potentially be achieved by tuning hyperparameters, increasing network complexity, or implementing more advanced exploration strategies.<br>
+**Current Results:**
+Episodes: 100000<br>
+Wins:   55704 (55.70%)<br>
+Draws:  15803 (15.80%)<br>
+Losses: 28493 (28.49%)

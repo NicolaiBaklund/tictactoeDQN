@@ -12,12 +12,19 @@ q_online = Sequential([
     layers.Dense(64,9)
 ])
 
-optim = optimizers.SGD(q_online.parameters(), q_online.gradients(), learning_rate=5e-4)
+optim = optimizers.Adam(
+    parameters=q_online.parameters(),
+    grads=q_online.gradients(),
+    learning_rate=1e-3,   # good default
+    beta1=0.9,
+    beta2=0.999,
+    epsilon=1e-8
+)
 huber_loss = losses.Huber(delta=1.0)
 
 
 rng = np.random.default_rng(42)
-agent = DQNAgent(q_online, optim, huber_loss, gamma=0.99, target_update_k=500, action_dim=9)
+agent = DQNAgent(q_online, optim, huber_loss, gamma=0.99, target_update_k=300, action_dim=9)
 env = TicTacToeEnv(seed=0, illegal_move_mode='raise', opponent='random')
 buffer = ReplayBuffer(capacity=50000, obs_dim=9)
 
@@ -25,7 +32,7 @@ buffer = ReplayBuffer(capacity=50000, obs_dim=9)
 learn_start = 1000
 batch_size = 64
 learn_freq = 1
-episodes = 10_000
+episodes = 150_000
 step = 0
 
 
@@ -39,7 +46,7 @@ for episode in range(episodes):
     while not done:
         # act
         q_vals = q_online.forward(obs[None, :])[0]      # (9,)
-        a = select_action(q_vals, mask, linear_eps(step, decay_steps=50_000), rng)
+        a = select_action(q_vals, mask, linear_eps(step, decay_steps=1_000_000), rng)
 
         # step env
         s_next, r, done, info = env.step(a)
